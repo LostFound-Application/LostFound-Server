@@ -1,6 +1,7 @@
 import socket
 import threading
 from ServerLAPIThread import ServerAPIThread
+from ServerSendThread import UDPServerSendThread
 recvsize = 1024
 
 
@@ -18,8 +19,8 @@ class UDPServerListenThread(threading.Thread):
             try:
                 data, address = self.sock.recvfrom(recvsize)
                 if data is not None:
-                    print("test")
-                    self.apiThread.addAPIRequest(data.decode())
+                    print("Received data, forwarded  to API!")
+                    self.apiThread.addAPIRequest(data.decode(), address)
                 elif self.keepworking is False:
                     break
             except socket.timeout:
