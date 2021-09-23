@@ -3,7 +3,7 @@ import time
 from ServerListenThread import UDPServerListenThread
 
 localHost = "127.0.0.1"
-localPort = 5552
+localPort = 5553
 
 
 def bootServer():  # Boots the server with a listening, sending and a API thread

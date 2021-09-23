@@ -1,8 +1,8 @@
 import socket
 import threading
 from ServerLAPIThread import ServerAPIThread
-from ServerSendThread import UDPServerSendThread
-recvsize = 1024
+from LowPrioSendThread import UDPLowPrioritySendThread
+recvsize = 512
 
 
 class UDPServerListenThread(threading.Thread):
