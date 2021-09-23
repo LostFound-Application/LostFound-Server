@@ -29,3 +29,6 @@ class UDPHighPrioritySendThread(threading.Thread):
             except socket.timeout:
                 print("Time-out occurred, resending")
                 pass
+            except socket.error as exc:
+                print("Client disconnected")
+                break

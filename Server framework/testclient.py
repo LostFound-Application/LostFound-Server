@@ -10,19 +10,23 @@ okmes = b"OK"
 def bootClient():
     print("Booting up Lost and Found test client")
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.sendto(testMessage, (localHost, localPort))
-    print("Sent message to server: " + testMessage.decode())
-    data, address = sock.recvfrom(512)
-    print("Received the following reply: " + data.decode())
+    sock.settimeout(5)
+    try:
+        sock.sendto(testMessage, (localHost, localPort))
+        print("Sent message to server: " + testMessage.decode())
+        data, address = sock.recvfrom(512)
+        print("Received the following reply: " + data.decode())
 
-    sock.sendto(testHigh, (localHost, localPort))
-    print("Sent message to server: " + testHigh.decode())
-    time.sleep(7) #sleep to test resend
-    dataHigh, addressHigh = sock.recvfrom(512)
-    print("Received the following reply: " + dataHigh.decode())
-    sock.sendto(okmes, addressHigh)
-    print("Sent message to server: " + okmes.decode())
+        sock.sendto(testHigh, (localHost, localPort))
+        print("Sent message to server: " + testHigh.decode())
+        #time.sleep(7) #sleep to test resend
+        dataHigh, addressHigh = sock.recvfrom(512)
+        print("Received the following reply: " + dataHigh.decode())
+        sock.sendto(okmes, addressHigh)
+        print("Sent message to server: " + okmes.decode())
 
+    except socket.timeout:
+        print("timed out")
     print("Closing client")
     sock.shutdown(socket.SHUT_RDWR)
     sock.close()
