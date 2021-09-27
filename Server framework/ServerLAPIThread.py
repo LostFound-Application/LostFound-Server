@@ -17,7 +17,7 @@ class ServerAPIThread(threading.Thread):
         print("Handling API requests from client")
         messageOK = b"I am the bear."
         self.sendThread.start()
-        while self.keepworking:
+        while self.keepworking: #Switch,  basic functions,
             if self.linkedList:
                 print("Processing API request, API request:")
                 print(self.linkedList[-1][0])
