@@ -26,22 +26,21 @@ class ServerAPIThread(threading.Thread):
             if self.linkedList:
                 print("Processing API request, API request:")
                 print(self.linkedList[-1][0])
-                if "HIGH" in self.linkedList[-1][0]:
-                    #added
-                    if "lost" in self.linkedList[-1][0]:
-                        #add a lost person to the database
-                        self.addLostPerson(self.linkedList[-1][0])
-                        self.getLostLocations()
-                        self.highPriorityMessage("Added as lost, stay still", self.linkedList[-1][1])
-                        self.linkedList.pop()
-                    else:
-                        #delete the found person from the database
-                        self.personFound(self.linkedList[-1][0])
-                        self.highPriorityMessage("You have been found", self.linkedList[-1][1])
-                        self.linkedList.pop()
+                if "lost" in self.linkedList[-1][0]:
+                    # add a lost person to the database
+                    self.addLostPerson(self.linkedList[-1][0])
+                    self.getLostLocations()
+                    self.highPriorityMessage("Added as lost, stay still", self.linkedList[-1][1])
+                    self.linkedList.pop()
+                elif "found" in self.linkedList[-1][0]:
+                    self.personFound(self.linkedList[-1][0])
+                    self.highPriorityMessage("You have been found", self.linkedList[-1][1])
+                    self.linkedList.pop()
+                elif "updateme" in self.linkedList[-1][0]:
+                    self.sendThread.addSendRequest(str(self.getLostLocations()), self.linkedList[-1][1])
+                    self.linkedList.pop()
                 else:
-                    #Send the locations of the lost as a list of pairs
-                    self.sendThread.addSendRequest(str(self.getLostLocations()).encode(), self.linkedList[-1][1])
+                    self.sendThread.addSendRequest("Invalid API request", self.linkedList[-1][1])
                     self.linkedList.pop()
 
     def addAPIRequest(self, request, address):
@@ -51,12 +50,12 @@ class ServerAPIThread(threading.Thread):
         dataparts = data.split(",")
         x = datetime.datetime.now()
         dtime = x.strftime("%H.%M %d.%m.%Y")
-        location = (dataparts[2], dataparts[3], dataparts[4], dtime, 1)
+        location = (dataparts[1], dataparts[2], dataparts[3], dtime, 1)
         Methods.addNewLocation(location)
     
     def personFound(self, data):
         dataparts = data.split(",")
-        id = (dataparts[2])
+        id = (dataparts[1])
         Methods.deleteByClientID(id)
         print(id)
 
@@ -65,7 +64,6 @@ class ServerAPIThread(threading.Thread):
         return vals
 
     def highPriorityMessage(self, data, address):
-        testMessage = "OH BOI"
         highPrioThread = UDPHighPrioritySendThread(data, address)
         highPrioThread.start()
 

@@ -17,8 +17,9 @@ def bootClient():
         lostmsg2 = "lost,e4442,6332.69,7.00"
         update = "updateme"
         foundmsg = "found,k3442"
+        foundmsg2 = "found,e4442"
 
-        sock.sendto(update.encode(), (localHost, localPort))
+        sock.sendto(foundmsg2.encode(), (localHost, localPort))
         print("Sent message to server: " + lostmsg1)
         data, address = sock.recvfrom(512)
         print("Received the following reply: " + data.decode())

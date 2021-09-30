@@ -18,7 +18,7 @@ class UDPLowPrioritySendThread(threading.Thread):
         while self.keepworking:
             if self.linkedList:
                 print("Sending low priority response")
-                self.sock.sendto(self.linkedList[-1][0], self.linkedList[-1][1])
+                self.sock.sendto(self.linkedList[-1][0].encode(), self.linkedList[-1][1])
                 self.linkedList.pop()
 
     def addSendRequest(self, request, address):
