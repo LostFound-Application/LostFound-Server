@@ -25,8 +25,8 @@ def create_locations_table(conn):
     sql = """ CREATE TABLE IF NOT EXISTS Locations (
     id integer PRIMARY KEY,
     clientid varchar(100),
-    latitude varchar(100),
-    longitude varchar(100),
+    latitude real,
+    longitude real,
     date varchar(100),
     lost boolean
     )"""

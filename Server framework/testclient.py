@@ -19,11 +19,22 @@ def bootClient():
         foundmsg = "found,k3442"
 
         sock.sendto(update.encode(), (localHost, localPort))
-        print("Sent message to server: " + lostmsg1)
+        print("Sent message to server: " + update)
         data, address = sock.recvfrom(512)
-        print("Received the following reply: " + data.decode())
+        part = data.decode()
+        print("Received the following reply: " + part)
         # sock.sendto(okmes, address)
         # print("Sent message to server: " + okmes.decode())
+        tuples = part[1:-1]
+        tuples = tuples.split("),")
+        for i in tuples:
+            i = i.replace("(","")
+            i = i.replace(")","")
+            i = i.replace(" ", "")
+            print(i)
+        
+
+
 
 
     except socket.timeout:

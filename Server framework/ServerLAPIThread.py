@@ -50,7 +50,7 @@ class ServerAPIThread(threading.Thread):
         dataparts = data.split(",")
         x = datetime.datetime.now()
         dtime = x.strftime("%H.%M %d.%m.%Y")
-        location = (dataparts[1], dataparts[2], dataparts[3], dtime, 1)
+        location = (dataparts[1], float(dataparts[2]), float(dataparts[3]), dtime, 1)
         Methods.addNewLocation(location)
     
     def personFound(self, data):
