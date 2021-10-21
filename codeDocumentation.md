@@ -1,7 +1,7 @@
 This document documents the source code of the back-end server in detail.
 
 
-server.py:
+## server.py:
 This python script is the script responsible for booting up the server and shutting it down. 
 This script can be started by running the command ''python3 server.py''.
 To stop the server please type in 'stop' in the command line interface and wait till the server properly shuts down all its sockets.
@@ -16,7 +16,7 @@ After, it will loop until it receives as input the word 'stop'.
 Once this happens, it will signal the  threads to cease operations, wait till these operations have succeeded, and then shutdown and close the listening socket, before terminating the process.
 
 
-HighPrioSendThread.py
+## HighPrioSendThread.py
 
 
 This file contains a threading class meant to send high priority UDP packets between two end-points as described in detail in the accompanying project report. 
@@ -25,7 +25,7 @@ until either the data is sent or an error occured.
 Once this process is completed the thread itself will cease operation.
 
 
-LowPrioSendThread.py
+## LowPrioSendThread.py
 
 
 This file contains a threading class meant to send low priority UDP packets between two end-points as described in detail in the accompanying project report. 
@@ -34,7 +34,7 @@ The linked list itself is a list of tuples of the data it needs to send out and 
 New requests can be added with the addSendRequest() function, and an object of the class will keep working until the killThread function is called.
 
 
-ServerLAPIThread.py
+## ServerLAPIThread.py
 In this file is a threading class dedicated to processing API requests it receives from a listening thread. 
 The class contains a linked list which it continuously checks for new items. 
 If there is a new item, which is of the form (data, address), it processes this requests and, if needed, creates a reply to send back.
@@ -46,53 +46,99 @@ The API thread will continue operating until the killThread()  function has been
 
 
 This API thread has dedicated functions to processing API requests. Below each one will be briefly discussed.
+
 addLostPerson(Data):
+
 It splits the data on ",", creates a timestamp, and then enters a new lost person entry into the database file.
+
 personFound(Data):
+
 It splits the data on ",", retrieves the ID, then deletes a lost person entry from the database using that ID.
+
 getLostLocations():
+
 It requests all all location data from all lost person entries in the database, stores it in a variable, and returns this data.
 
 
-ServerListenThread.py
-This file contains a threading class that is used to listen for incoming UDP packets. 
+
+## ServerListenThread.py
+
+This file contains a threading class that is used to listen for incoming UDP packets.
+
 It will do so continuously until the killThread() function is called on the object derived from the class. 
+
 This class will make its own dedicated apiThread, see file ServerAPIThread.py for more information. 
+
 If it receives data, it will forward this data to its dedicated API thread with the addAPIRequest(Data, address) call.
+
 The socket will time-out every few seconds before restarting operation. 
+
 This is done to allow for the proper closure of the socket if called upon to cease operation as the socket otherwise is a blocking call.
 
 
-Methods.py
+
+
+## Methods.py
+
 This file contains various helper functions that give access to the database. 
+
 The list of functions and with their brief descriptions is found below.
+
 addNewLocation(location): Add new lost entry to database with location.
+
 getAll(): Return all entries
+
 updateLocation(location, id): Update location of entry with ID.
+
 getLost(): Get lost entries.
+
 getLostLocations(): Get location information of all lost entrieds.
+
 getLocationByID(id): Get location of entry with ID.
+
 getLocationByClientID(cliid):
+
 deleteLocation(id): Delete entry with ID.
+
 initiateDatabase(): Initiate database.
+
 deleteByClientID(cliid):
 
 
-Connection.py
+
+## Connection.py
+
 This file contains functions dedicated to creating the database tables and their connections, with some minor utility functions.
+
 The list of functions is given below.
+
 create_connection():
+
 close_connection(conn):
+
 create_table(conn, sql):
+
 create_locations_table(conn):
+
 add_location(connection, location):
+
 update_location(conn, location):
+
 get_location_by_id(conn, id):
+
 get_location_by_clientid(conn, clientid):
+
 get_all(conn):
+
 get_lost(conn):
+
 get_lost_locations(conn):
+
 get_not_lost(conn):
+
 delete_location(conn, id):
+
 delete_location_by_clientid(conn, clientid):
+
 delete_all(conn):
+
