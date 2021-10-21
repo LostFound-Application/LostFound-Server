@@ -39,3 +39,8 @@ or
 ```bash
 $> py .\testclient2.py
 ```
+## Server code documentation
+
+For the server we have made a separate file containing its code documentation. This file describes each of our code files and details its available functions and use cases.
+
+[Link to Server Documentation](https://github.com/LostFound-Application/LostFound-Server/blob/main/codeDocumentation.md)
